@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRef, useEffect } from "react";
+import Page from "./page";
 
 function App() {
+  const scrollPositionRef = useRef(0);
+
+  const handleScroll = () => {
+    console.log(scrollPositionRef);
+    scrollPositionRef.current = window.scrollY;
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("scrollPositionRef", scrollPositionRef);
+  }, [window.scrollY]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Page>
+      <button onClick={handleScroll}>Click</button>
+      <p style={{ height: 10000 }}></p>
+    </Page>
   );
 }
 
